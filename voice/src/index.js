@@ -5,8 +5,6 @@ import App from './App';
 import Mathapp from './Mathgame';
 import Bioapp from './Biologygame';
 import reportWebVitals from './reportWebVitals';
-import Bioapp from './Biologygame';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
