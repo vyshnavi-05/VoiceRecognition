@@ -1,16 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import Mathapp from './Mathgame';
-import Bioapp from './Biologygame';
-import reportWebVitals from './reportWebVitals';
+import GamePage from './app/GamePage';
+import Fruit from './app/fruit/Fruit';
+import reportWebVitals from './app/reportWebVitals';
+import Biologygame from './app/biologygame/Biologygame';
+import Mathgame from './app/mathgame/Mathgame';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <App />
-    <Mathapp/>
-    <Bioapp/>
+  <Router>
+      <Routes>
+        <Route path="/" element={<GamePage />} />
+        <Route path="/biologygame" element={<Biologygame />} />
+        <Route path="/mathgame" element={<Mathgame />} />
+        <Route path="/fruit" element={<Fruit />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
