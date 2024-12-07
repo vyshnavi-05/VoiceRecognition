@@ -15,7 +15,7 @@ function Navbar() {
       {/* Logo */}
       <div className="flex items-center"> 
         <img src="/logo.png" alt="App Logo" className="w-12 h-12 mr-3" /> 
-        <h1 className="text-xl font-bold">Skill Learning Hub</h1> 
+        <h1 className="text-xl font-bold">Edu Play Hub</h1> 
       </div> 
 
       {/* Navigation Links */}
