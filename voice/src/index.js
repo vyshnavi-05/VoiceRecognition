@@ -5,16 +5,23 @@ import "./index.css";
 import Fruit from "./app/Features/Education/fruit/Fruit";
 import Biologygame from "./app/Features/Education/biologygame/Biologygame";
 import Mathgame from "./app/Features/Education/mathgame/Mathgame";
+import ChefMaster from "./app/Features/Vocational/ChefMaster/ChefMaster";  // Import ChefMaster game
 import GamifiedCertification from "./app/Features/GamifiedCertification/GamifiedCertification";
-import Chatbot from "./app/Features/Chatbot/Chatbot";
+import Chatbot from "./app/Features/Chatbot/chatbot";
 import reportWebVitals from "./app/reportWebVitals";
 
 // Navbar Component
 function Navbar() {
   const [dropdownVisible, setDropdownVisible] = React.useState(false);
+  const [dropdownType, setDropdownType] = React.useState("");
 
-  const toggleDropdown = () => {
-    setDropdownVisible((prev) => !prev);
+  const toggleDropdown = (type) => {
+    if (dropdownType === type) {
+      setDropdownVisible((prev) => !prev);
+    } else {
+      setDropdownVisible(true);
+      setDropdownType(type);
+    }
   };
 
   return (
@@ -34,13 +41,13 @@ function Navbar() {
         </li>
         <li className="relative">
           <button
-            onClick={toggleDropdown}
+            onClick={() => toggleDropdown("features")}
             className="hover:underline focus:outline-none"
           >
             Features
           </button>
           {/* Dropdown for Features */}
-          {dropdownVisible && (
+          {dropdownVisible && dropdownType === "features" && (
             <ul className="absolute bg-sky-600 text-white rounded shadow-md mt-2">
               <li className="hover:bg-sky-700">
                 <Link to="/education" className="block px-4 py-2">
@@ -116,6 +123,12 @@ function MiddlePart() {
             Fruit Game
           </Link>
           <Link
+            to="/chefmaster"
+            className="border border-white text-white px-6 py-2 rounded-full hover:bg-sky-600 hover:text-black transition"
+          >
+            ChefMaster Game
+          </Link>
+          <Link
             to="/all-games"
             className="border border-blue-400 text-blue-400 px-6 py-2 rounded-full hover:bg-blue-500 hover:text-white transition"
           >
@@ -173,6 +186,31 @@ function EducationPage() {
   );
 }
 
+// Vocational Page Component
+function VocationalPage() {
+  return (
+    <div className="bg-black text-white py-12 px-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-4">Vocational Games</h2>
+        <p className="text-gray-300 mb-8">
+          Explore vocational games like ChefMaster to enhance your practical skills.
+        </p>
+        <div className="flex justify-center gap-6">
+          <div className="border border-white text-white px-8 py-6 rounded-lg hover:bg-sky-600 transition">
+            <h3 className="text-xl font-bold mb-4">ChefMaster Game</h3>
+            <Link
+              to="/chefmaster"
+              className="text-white border border-white px-4 py-2 rounded-full hover:bg-sky-700"
+            >
+              Start Game
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Footer Component
 function Footer() {
   return (
@@ -215,9 +253,11 @@ function App() {
               }
             />
             <Route path="/education" element={<EducationPage />} />
+            <Route path="/vocational" element={<VocationalPage />} />
             <Route path="/biologygame" element={<Biologygame />} />
             <Route path="/mathgame" element={<Mathgame />} />
             <Route path="/fruit" element={<Fruit />} />
+            <Route path="/chefmaster" element={<ChefMaster />} /> {/* Add the new route for ChefMaster */}
             <Route path="/game-certification" element={<GamifiedCertification />} />
             <Route path="/chatbot" element={<Chatbot />} />
           </Routes>
