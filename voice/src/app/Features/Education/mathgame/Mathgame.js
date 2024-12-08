@@ -14,7 +14,6 @@ const Mathapp = () => {
   const generateMathQuestion = () => {
     const randomNum1 = Math.floor(Math.random() * 100) + 1;
     const randomNum2 = Math.floor(Math.random() * 100) + 1;
-    const randomNum3 = Math.floor(Math.random() * 100) + 1;
     const randomOperator = Math.floor(Math.random() * 3); // 0: addition, 1: subtraction, 2: multiplication
 
     let question, answer;
