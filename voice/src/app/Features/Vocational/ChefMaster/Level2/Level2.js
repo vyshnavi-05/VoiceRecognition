@@ -35,8 +35,7 @@ const Level2 = ({ onComplete }) => {
     const correctIngredients = recipes[selectedRecipe];
     const score =
       (selectedIngredients.filter((ing) => correctIngredients.includes(ing))
-        .length /
-        correctIngredients.length) *
+        .length / correctIngredients.length) *
       100;
     setIsSubmitted(true);
     onComplete(score);

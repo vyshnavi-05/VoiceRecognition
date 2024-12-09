@@ -4,8 +4,8 @@ import Level2 from "./Level2/Level2";
 
 const App = () => {
   const [level, setLevel] = useState(1);
-  const [setLevel1Score] = useState(0);
-  const [setLevel2Score] = useState(0);
+  const [level1Score, setLevel1Score] = useState(0);
+  const [level2Score, setLevel2Score] = useState(0);
 
   const handleLevel1Completion = (score) => {
     setLevel1Score(score);
