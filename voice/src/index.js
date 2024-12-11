@@ -2,13 +2,15 @@ import React from "react";  // Keep this line (line 11)
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./index.css";
-import Fruit from "./app/Features/Education/fruit/Fruit";
-import Biologygame from "./app/Features/Education/biologygame/Biologygame";
-import Mathgame from "./app/Features/Education/mathgame/Mathgame";
+import Fruit from "./app/Features/Education/Below10/fruit/Fruit";
+import Biologygame from "./app/Features/Education/Below10/biologygame/Biologygame";
+import Mathgame from "./app/Features/Education/Below10/mathgame/Mathgame";
 import ChefMaster from "./app/Features/Vocational/ChefMaster/ChefMaster";  // Import ChefMaster game
 import GamifiedCertification from "./app/Features/GamifiedCertification/GamifiedCertification";
 import Chatbot from "./app/Features/Chatbot/chatbot";
 import reportWebVitals from "./app/reportWebVitals";
+import Below20 from "./app/Features/Education/Below20/Below20";
+import Below30 from "./app/Features/Education/Below30/Below30";
 
 // Navbar Component
 function Navbar() {
@@ -235,6 +237,39 @@ function ChatbotIcon() {
   );
 }
 
+function EducationSelectorPage() {
+  return (
+    <div className="bg-black text-white py-12 px-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-4">Select Age Group</h2>
+        <p className="text-gray-300 mb-8">
+          Choose an age group to find suitable educational games.
+        </p>
+        <div className="flex justify-center gap-6">
+          <Link
+            to="/education/below10"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 10
+          </Link>
+          <Link
+            to="/education/below20"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 20
+          </Link>
+          <Link
+            to="/education/below30"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 30
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // App Component
 function App() {
   return (
@@ -252,7 +287,10 @@ function App() {
                 </>
               }
             />
-            <Route path="/education" element={<EducationPage />} />
+            <Route path="/education" element={<EducationSelectorPage />} />
+            <Route path="/education/below10" element={<EducationPage />} /> {/* Existing page for age below 10 */}
+            <Route path="/education/below20" element={<Below20 />} /> {/* Duplicate if required */}
+            <Route path="/education/below30" element={<Below30 />} /> 
             <Route path="/vocational" element={<VocationalPage />} />
             <Route path="/biologygame" element={<Biologygame />} />
             <Route path="/mathgame" element={<Mathgame />} />
