@@ -9,6 +9,8 @@ import ChefMaster from "./app/Features/Vocational/ChefMaster/ChefMaster";
 import GamifiedCertification from "./app/Features/GamifiedCertification/GamifiedCertification";
 import Chatbot from "./app/Features/Chatbot/chatbot";
 import reportWebVitals from "./app/reportWebVitals";
+import Below20 from "./app/Features/Education/Below20/Below20";
+import Below30 from "./app/Features/Education/Below30/Below30";
 
 // Navbar Component
 function Navbar() {
@@ -96,22 +98,34 @@ function FeaturesPage() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link
-            to="/education"
+            to="/biologygame"
             className="border border-white text-white px-6 py-2 rounded-full hover:bg-sky-600 hover:text-black transition"
           >
-            Education
+            Biology Game
           </Link>
           <Link
-            to="/vocational"
+            to="/mathgame"
             className="border border-white text-white px-6 py-2 rounded-full hover:bg-sky-600 hover:text-black transition"
           >
-            Vocational
+            Math Game
           </Link>
           <Link
-            to="/game-certification"
+            to="/fruit"
             className="border border-white text-white px-6 py-2 rounded-full hover:bg-sky-600 hover:text-black transition"
           >
-            Game Certification
+            Fruit Game
+          </Link>
+          <Link
+            to="/chefmaster"
+            className="border border-white text-white px-6 py-2 rounded-full hover:bg-sky-600 hover:text-black transition"
+          >
+            ChefMaster Game
+          </Link>
+          <Link
+            to="/all-games"
+            className="border border-blue-400 text-blue-400 px-6 py-2 rounded-full hover:bg-blue-500 hover:text-white transition"
+          >
+            Show All
           </Link>
         </div>
       </div>
@@ -194,6 +208,38 @@ function Footer() {
     </footer>
   );
 }
+function EducationSelectorPage() {
+  return (
+    <div className="bg-black text-white py-12 px-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-4">Select Age Group</h2>
+        <p className="text-gray-300 mb-8">
+          Choose an age group to find suitable educational games.
+        </p>
+        <div className="flex justify-center gap-6">
+          <Link
+            to="/education/below10"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 10
+          </Link>
+          <Link
+            to="/education/below20"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 20
+          </Link>
+          <Link
+            to="/education/below30"
+            className="border border-white text-white px-6 py-4 rounded-lg hover:bg-sky-600 transition"
+          >
+            Below 30
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function ChatbotIcon() {
   return (
@@ -202,7 +248,6 @@ function ChatbotIcon() {
     </div>
   );
 }
-
 function App() {
   const [transcript, setTranscript] = useState(""); // To store the transcript of the voice
   const [isListening, setIsListening] = useState(false); // State to track if voice recognition is active
@@ -217,7 +262,7 @@ function App() {
 
     recognition.onresult = (event) => {
       const transcript = event.results[event.resultIndex][0].transcript;
-      setTranscript(transcript);
+      setTranscript(transcript); // Update transcript with recognized speech
       // Listen for specific voice commands
       if (transcript.toLowerCase().includes("open features")) {
         navigate("/features");
@@ -228,6 +273,7 @@ function App() {
       } else if (transcript.toLowerCase().includes("open chatbot")) {
         navigate("/chatbot");
       }
+        
     };
 
     recognition.start();
@@ -246,13 +292,29 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       <Navbar />
       <HeroSection />
+      
+      {/* Displaying the transcript */}
+      <div className="text-center py-4">
+        <p className="text-xl text-white">Transcript: {transcript}</p>
+      </div>
+
       <Routes>
         <Route path="/" element={<FeaturesPage />} />
         <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/education" element={<EducationPage />} />
+        <Route path="/biologygame" element={<Biologygame />} />
+        <Route path="/mathgame" element={<Mathgame />} />
+        <Route path="/fruit" element={<Fruit />} />
+        <Route path="/chefmaster" element={<ChefMaster />} />
         <Route path="/vocational" element={<VocationalPage />} />
         <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/game-certification" element={<GamifiedCertification />} />
+        <Route path="/education" element={<EducationSelectorPage />} />
+        <Route path="/education/below10" element={<EducationPage/>} />
+        <Route path="/education/below20" element={<Below20 />} />
+        <Route path="/education/below30" element={<Below30 />} />
+        
       </Routes>
+
       <div className="flex justify-center space-x-4 py-4">
         <button
           onClick={isListening ? stopRecognition : startRecognition}
@@ -261,11 +323,13 @@ function App() {
           {isListening ? "Stop Voice Recognition" : "Start Voice Recognition"}
         </button>
       </div>
+
       <Footer />
       <ChatbotIcon />
     </div>
   );
 }
+
 
 // Wrap App with Router in index.js to provide routing context
 const root = ReactDOM.createRoot(document.getElementById("root"));
