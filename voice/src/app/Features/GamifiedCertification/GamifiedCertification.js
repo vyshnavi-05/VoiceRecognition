@@ -1,20 +1,20 @@
 import React, { useState } from "react"; 
 import { Link } from "react-router-dom"; 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas'; // Make sure this is imported correctly
+import { jsPDF } from 'jspdf'; // Correct way to import jsPDF
 
 function GamifiedCertification() { 
-  const [name, setName] = useState('');
+  const [certificateName, setCertificateName] = useState(''); // Renamed from 'name' to avoid conflict
   const [showCertificate, setShowCertificate] = useState(false);
   const [certificateContent, setCertificateContent] = useState('');
 
   const generateCertificate = () => {
-    if (name.trim() !== '') {
+    if (certificateName.trim() !== '') {
       const certificateHtml = `
         <div style="padding: 2rem; text-align: center; background: white; color: black; font-family: Arial;">
           <h1 style="font-size: 3rem; font-weight: bold;">Certificate of Achievement</h1>
           <p style="font-size: 2rem;">Awarded to</p>
-          <h2 style="font-size: 3rem; margin-top: 1rem;">${name}</h2>
+          <h2 style="font-size: 3rem; margin-top: 1rem;">${certificateName}</h2>
           <p style="font-size: 1.5rem; margin-top: 2rem;">For outstanding performance</p>
           <p style="font-size: 1rem; margin-top: 1rem;">Issued by: Gamified Certification</p>
         </div>
@@ -27,17 +27,25 @@ function GamifiedCertification() {
   };
 
   const downloadCertificate = () => {
+    if (!certificateContent) {
+      alert('Please generate a certificate first.');
+      return;
+    }
+
     const certificateElement = document.createElement('div');
     certificateElement.innerHTML = certificateContent;
+    document.body.appendChild(certificateElement); // Temporarily add the element to the body to render
 
     // Configure html2canvas to handle potential iframe issues
     html2canvas(certificateElement, { useCORS: true }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
       pdf.addImage(imgData, 'PNG', 0, 0, 210, 297); // A4 dimensions in mm
-      pdf.save(`${name}-certificate.pdf`);
+      pdf.save(`${certificateName}-certificate.pdf`);
+      document.body.removeChild(certificateElement); // Clean up by removing the temporary element
     }).catch((error) => {
       console.error("Error generating certificate: ", error);
+      alert("Failed to generate certificate. Please try again.");
     });
   };
 
@@ -73,8 +81,8 @@ function GamifiedCertification() {
             type="text"
             className="border border-gray-300 p-2 rounded w-full mb-4 text-black bg-black"
             placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={certificateName}
+            onChange={(e) => setCertificateName(e.target.value)}
           />
           <button
             onClick={generateCertificate}
