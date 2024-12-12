@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import AnswerInput from "./AnswerInput"; // Assuming you have this component for user input
-import interviewService from "../services/interviewService"; // Import the interviewService
+import AnswerInput from './AnswerInput'; // Adjusted path for AnswerInput.js
+import interviewService from '../../../../../services/interviewService';
 
 const InterviewPrep = () => {
   const [question, setQuestion] = useState(interviewService.getRandomQuestion()); // Start with a random question
@@ -19,7 +19,7 @@ const InterviewPrep = () => {
   // Speak the question when it changes
   useEffect(() => {
     if (question?.question) {
-      speakText(Here is your question: ${question.question});
+      speakText(`Here is your question: ${question.question}`);
     }
   }, [question]);
 
@@ -38,8 +38,8 @@ const InterviewPrep = () => {
       setFeedback("Correct answer! Well done.");
       speakText("Correct answer! Well done.");
     } else {
-      setFeedback("Incorrect answer. Here is a hint: " + question.answer);
-      speakText("Incorrect answer. Here is a hint.");
+      setFeedback("Include your respective answer with this " + question.answer);
+      speakText("Include your respective answer with this ");
     }
 
     // Get the next question
@@ -57,7 +57,7 @@ const InterviewPrep = () => {
 
   const provideFeedback = () => {
     const correctAnswers = answerHistory.filter((item) => item.isCorrect).length;
-    const feedbackMessage = You answered ${correctAnswers} out of 5 questions correctly.;
+    const feedbackMessage = `You answered ${correctAnswers} out of 5 questions correctly.`;
 
     if (correctAnswers === 5) {
       setFeedback("Excellent! Keep up the good work!");
@@ -73,18 +73,23 @@ const InterviewPrep = () => {
 
   return (
     <div className="interview-prep">
-      <h2>Interview Preparation</h2>
+      <h2 className="text-white">Interview Preparation</h2>
       <div className="question">
-        <h3>Question:</h3>
-        <p>{question.question}</p> {/* Render the question here */}
+        <h3 className="text-white">Question:</h3>
+        <p className="text-white">{question.question}</p> {/* Render the question here */}
       </div>
       <AnswerInput answer={userAnswer} setAnswer={setUserAnswer} />
-      <button onClick={handleAnswerSubmit}>Submit Answer</button>
+      <button 
+        onClick={handleAnswerSubmit}
+        className="bg-green-500 text-white p-2 rounded-lg mt-4 hover:bg-green-700"
+      >
+        Submit Answer
+      </button>
 
       {feedback && (
-        <div className="feedback">
-          <h3>Feedback:</h3>
-          <p>{feedback}</p>
+        <div className="feedback mt-4">
+          <h3 className="text-white">Feedback:</h3>
+          <p className="text-white">{feedback}</p>
         </div>
       )}
     </div>

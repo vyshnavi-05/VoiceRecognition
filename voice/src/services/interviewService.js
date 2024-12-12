@@ -1,94 +1,53 @@
-import React, { useState, useEffect } from "react";
+import stringSimilarity from "string-similarity";
 
-// Child Component: AnswerInput
-const AnswerInput = ({ answer, setAnswer, evaluateAnswer, hint }) => {
-  const [isListening, setIsListening] = useState(false);
+// Questions and Expected Answers
+const questionsData = [
+  {
+    question: "Tell me about yourself.",
+    keywords: ["background", "skills", "motivation"], // Key concepts for evaluation
+    answer: "Your answer should briefly introduce your background, skills, and motivation.",
+  },
+  {
+    question: "Why do you want to work here?",
+    keywords: ["company’s values", "culture", "fit"],
+    answer: "Show that you understand the company’s values and culture, and how you fit into them.",
+  },
+  {
+    question: "What are your strengths and weaknesses?",
+    keywords: ["strength relevant to the job", "working on improving weaknesses"],
+    answer: "Identify a strength relevant to the job and a weakness you’re working on improving.",
+  },
+  // Add additional questions here...
+];
 
-  // UseEffect to ensure the entire hint is read aloud only once when the component is mounted
-  useEffect(() => {
-    if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(hint);  // Ensure the entire hint text is passed here
-      utterance.lang = "en-US";
-      window.speechSynthesis.speak(utterance); // Speak the entire hint aloud
-    }
-  }, [hint]); // Ensures it runs when the hint prop changes
-
-  const startListening = () => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
-      alert("Speech Recognition is not supported in this browser. Try using Chrome.");
-      return;
-    }
-
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-
-    recognition.continuous = false; // Stop after one sentence
-    recognition.interimResults = false; // Don't show partial results
-    recognition.lang = "en-US"; // Set the language
-
-    recognition.onstart = () => setIsListening(true);
-    recognition.onend = () => setIsListening(false);
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setAnswer(transcript); // Update the textarea with the recognized speech
-      evaluateAnswer(transcript); // Evaluate the input answer
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
-
-    recognition.start();
-  };
-
-  return (
-    <div className="answer-input">
-      <h3>{hint}</h3>  {/* Display the hint or question */}
-      <textarea
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
-        placeholder="Type your answer here or use voice input..."
-        rows="5"
-        cols="50"
-      />
-      <button onClick={startListening} disabled={isListening}>
-        {isListening ? "Listening..." : "Use Voice Input"}
-      </button>
-    </div>
-  );
+// Get Random Question
+export const getRandomQuestion = () => {
+  const randomIndex = Math.floor(Math.random() * questionsData.length);
+  return questionsData[randomIndex];
 };
 
+// Enhanced Answer Checking Logic
+export const checkAnswer = (userAnswer, question) => {
+  const matchingQuestion = questionsData.find((q) => q.question === question);
 
+  if (!matchingQuestion) {
+    return false; // If the question doesn't exist, return false
+  }
 
+  const correctAnswer = matchingQuestion.answer.toLowerCase();
+  const keywords = matchingQuestion.keywords.map((kw) => kw.toLowerCase());
+  const userAnswerLower = userAnswer.toLowerCase();
 
+  // Step 1: Compute similarity score for the entire answer
+  const similarity = stringSimilarity.compareTwoStrings(userAnswerLower, correctAnswer);
 
-
-
-
-
-  
-// Parent Component: App
-const App = () => {
-  const [answer, setAnswer] = useState("");
-
-  // Function to evaluate the answer
-  const evaluateAnswer = (input) => {
-    if (input.toLowerCase() === "correct answer") {
-      alert("Great job! Your answer is correct.");
-    } else {
-      alert("Oops! That's not correct. Try again.");
-    }
-  };
-
-  return (
-    <div className="app">
-      <h1>Voice Input Answer Evaluation</h1>
-      <AnswerInput answer={answer} setAnswer={setAnswer} evaluateAnswer={evaluateAnswer} />
-    </div>
+  // Step 2: Check if the user's answer contains any of the keywords
+  const keywordMatches = keywords.some((keyword) =>
+    userAnswerLower.includes(keyword)
   );
+
+  // Consider the answer correct if similarity > 0.5 OR it contains keywords
+  return similarity > 0.5 || keywordMatches;
 };
 
-export default App;
+export default { getRandomQuestion, checkAnswer };

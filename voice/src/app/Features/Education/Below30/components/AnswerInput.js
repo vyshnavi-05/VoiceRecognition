@@ -45,7 +45,7 @@ const AnswerInput = ({ answer, setAnswer, evaluateAnswer, hint }) => {
   };
 
   return (
-    <div className="answer-input">
+    <div className="answer-input bg-black">
       <h3>{hint}</h3>  {/* Display the hint or question */}
       <textarea
         value={answer}
@@ -53,6 +53,7 @@ const AnswerInput = ({ answer, setAnswer, evaluateAnswer, hint }) => {
         placeholder="Type your answer here or use voice input..."
         rows="5"
         cols="50"
+        className="bg-black"
       />
       <button onClick={startListening} disabled={isListening}>
         {isListening ? "Listening..." : "Use Voice Input"}

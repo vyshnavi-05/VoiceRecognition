@@ -1,12 +1,14 @@
-// app/Features/Chatbot.js
 import React from "react";
 
-function Below30() {
+import InterviewPrep from './components/InterviewPrep';
+
+
+
+function App() {
   return (
-    <div className="bg-black text-white min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold">Hi, develop a game for below 30</h1>
-      </div>
+    <div className="App">
+      <InterviewPrep />
+    </div>
   );
 }
-
-export default Below30;
+export default App;
