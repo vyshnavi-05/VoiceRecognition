@@ -273,7 +273,15 @@ function App() {
       } else if (transcript.toLowerCase().includes("open chatbot")) {
         navigate("/chatbot");
       }
-        
+      else if (transcript.toLowerCase().includes("open below 10")){
+        navigate("/education/below10");
+      }
+      else if (transcript.toLowerCase().includes("open below 20")){
+        navigate("/education/below20");
+      }
+      else if (transcript.toLowerCase().includes("open below 30")){
+        navigate("/education/below30");
+      }
     };
 
     recognition.start();
